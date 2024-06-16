@@ -1,5 +1,7 @@
 <?php
-require_once 'C:/xampp/htdocs/graduation_management/config/config.php';
+
+chdir(__DIR__);
+require_once '../config/config.php';
 
 $username = $password = "";
 $username_err = $password_err = $login_err = "";

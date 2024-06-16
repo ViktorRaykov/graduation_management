@@ -1,5 +1,4 @@
 <?php
-require_once 'C:/xampp/htdocs/graduation_management/config/config.php';
 
 session_start();
 
@@ -7,6 +6,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+
+require_once '../config/config.php';
 
 $sql = "SELECT username, first_name, last_name, email, role FROM users WHERE id = ?";
 if($stmt = $mysqli->prepare($sql)){

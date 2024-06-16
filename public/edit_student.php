@@ -6,7 +6,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
-require_once 'C:/xampp/htdocs/graduation_management/config/config.php';
+require_once '../config/config.php';
 
 $name = $degree = $graduation_year = "";
 $name_err = $degree_err = $graduation_year_err = "";
