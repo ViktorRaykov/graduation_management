@@ -25,6 +25,7 @@ $username = htmlspecialchars($_SESSION["username"]);
     </div>
     <div class="buttons">
         <a href="student_profile.php" class="btn btn-primary">Личен профил</a>
+        <a href="students_same_year.php" class="btn btn-primary">Списък на студенти завършили в същата година</a>
         <a href="logout.php" class="btn btn-danger">Изход</a>
     </div>
 </body>
