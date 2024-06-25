@@ -8,52 +8,55 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
 
 require_once '../config/config.php';
 
-$name = $degree = $graduation_year = "";
-$name_err = $degree_err = $graduation_year_err = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = trim($_POST["username"]);
+    $first_name = trim($_POST["first_name"]);
+    $last_name = trim($_POST["last_name"]);
+    $email = trim($_POST["email"]);
+    $password = password_hash(trim($_POST["password"]), PASSWORD_DEFAULT);
+    $degree = trim($_POST["degree"]);
+    $graduation_year = trim($_POST["graduation_year"]);
 
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    if(empty(trim($_POST["name"]))){
-        $name_err = "Моля, въведете име.";
-    } else {
-        $name = trim($_POST["name"]);
-    }
-
-    if(empty(trim($_POST["degree"]))){
-        $degree_err = "Моля, изберете степен.";
-    } else {
-        $degree = trim($_POST["degree"]);
-    }
-
-    if(empty(trim($_POST["graduation_year"]))){
-        $graduation_year_err = "Моля, въведете година на дипломиране.";
-    } else {
-        $graduation_year = trim($_POST["graduation_year"]);
-    }
-
-    if(empty($name_err) && empty($degree_err) && empty($graduation_year_err)){
-        $sql = "INSERT INTO students (name, degree, graduation_year) VALUES (?, ?, ?)";
-        if($stmt = $mysqli->prepare($sql)){
-            $stmt->bind_param("sss", $param_name, $param_degree, $param_graduation_year);
-            $param_name = $name;
-            $param_degree = $degree;
-            $param_graduation_year = $graduation_year;
-
-            if($stmt->execute()){
-                header("location: manage_students.php");
+    $sql = "SELECT id FROM users WHERE username = ?";
+    if ($stmt = $mysqli->prepare($sql)) {
+        $stmt->bind_param("s", $param_username);
+        $param_username = $username;
+        if ($stmt->execute()) {
+            $stmt->store_result();
+            if ($stmt->num_rows == 1) {
+                echo "Това потребителско име вече съществува.";
             } else {
-                echo "Нещо се обърка. Моля, опитайте отново.";
+                $sql = "INSERT INTO users (username, password, email, first_name, last_name, role) VALUES (?, ?, ?, ?, ?, 'student')";
+                if ($stmt = $mysqli->prepare($sql)) {
+                    $stmt->bind_param("sssss", $username, $password, $email, $first_name, $last_name);
+                    if ($stmt->execute()) {
+                        $user_id = $stmt->insert_id;
+                        $sql = "INSERT INTO students (user_id, degree, graduation_year) VALUES (?, ?, ?)";
+                        if ($stmt = $mysqli->prepare($sql)) {
+                            $stmt->bind_param("iss", $user_id, $degree, $graduation_year);
+                            if ($stmt->execute()) {
+                                header("location: manage_students.php");
+                                exit;
+                            } else {
+                                echo "Нещо се обърка. Моля, опитайте отново.";
+                            }
+                        }
+                    } else {
+                        echo "Нещо се обърка. Моля, опитайте отново.";
+                    }
+                }
             }
-            $stmt->close();
+        } else {
+            echo "Нещо се обърка. Моля, опитайте отново.";
         }
+        $stmt->close();
     }
-
     $mysqli->close();
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <title>Добавяне на студент</title>
@@ -61,32 +64,44 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="wrapper">
-        <h2>Добавяне на нов студент</h2>
-        <p>Попълнете формата, за да добавите нов студент.</p>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
-                <label>Име</label>
-                <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
-                <span class="help-block"><?php echo $name_err; ?></span>
+        <h2>Добавяне на студент</h2>
+        <form action="" method="post">
+            <div class="form-group">
+                <label>Потребителско име</label>
+                <input type="text" name="username" class="form-control" required>
             </div>    
-            <div class="form-group <?php echo (!empty($degree_err)) ? 'has-error' : ''; ?>">
-                <label>Степен</label>
-                <select name="degree" class="form-control">
-                    <option value="bachelor">Бакалавър</option>
-                    <option value="master">Магистър</option>
-                    <option value="phd">Докторант</option>
-                </select>
-                <span class="help-block"><?php echo $degree_err; ?></span>
-            </div>
-            <div class="form-group <?php echo (!empty($graduation_year_err)) ? 'has-error' : ''; ?>">
-                <label>Година на дипломиране</label>
-                <input type="text" name="graduation_year" class="form-control" value="<?php echo $graduation_year; ?>">
-                <span class="help-block"><?php echo $graduation_year_err; ?></span>
+            <div class="form-group">
+                <label>Име</label>
+                <input type="text" name="first_name" class="form-control" required>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Добавяне">
+                <label>Фамилия</label>
+                <input type="text" name="last_name" class="form-control" required>
             </div>
-            <p><a href="manage_students.php">Обратно към управление на студенти</a>.</p>
+            <div class="form-group">
+                <label>Имейл</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Парола</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Степен</label>
+                <select name="degree" class="form-control" required>
+                    <option value="бакалавър">Бакалавър</option>
+                    <option value="магистър">Магистър</option>
+                    <option value="докторант">Докторант</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Година на дипломиране</label>
+                <input type="text" name="graduation_year" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Добави">
+                <a href="manage_students.php" class="btn btn-secondary">Назад</a>
+            </div>
         </form>
     </div>    
 </body>

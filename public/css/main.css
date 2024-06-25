@@ -47,6 +47,24 @@ body {
 .table th {
     background-color: #f2f2f2;
 }
+.table tbody tr.бакалавър td:not(.actions) {
+    background-color: #58d09a;
+}
+
+.table tbody tr.магистър td:not(.actions) {
+    background-color: #2cbede;
+}
+
+.table tbody tr.докторант td:not(.actions) {
+    background-color: #f47c86;
+}
+
+.table .actions {
+    background-color: transparent; 
+}
+
+
+
 .btn {
     padding: 8px 12px;
     margin: 5px;

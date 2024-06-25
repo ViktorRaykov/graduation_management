@@ -30,21 +30,24 @@ $mysqli->close();
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Администраторски профил</title>
+    <title>Личен профил</title>
     <link rel="stylesheet" href="css/profile.css">
 </head>
 <body>
     <div class="wrapper">
         <h2>Личен профил</h2>
-        <p>Потребителско име: <?php echo $username; ?></p>
-        <p>Име: <?php echo $first_name; ?></p>
-        <p>Фамилия: <?php echo $last_name; ?></p>
-        <p>Имейл: <?php echo $email; ?></p>
-        <p>Роля: <?php echo $role; ?></p>
-        <div class="profile-picture">
-            <img src="path/to/profile/picture.png" alt="Профилна снимка">
+        <div class="profile-info">
+            <p><strong>Потребителско име:</strong> <?= htmlspecialchars($_SESSION["username"]) ?></p>
+            <p><strong>Име:</strong> <?= htmlspecialchars($first_name) ?></p>
+            <p><strong>Фамилия:</strong> <?= htmlspecialchars($last_name) ?></p>
+            <p><strong>Имейл:</strong> <?= htmlspecialchars($email) ?></p>
+            <p><strong>Роля:</strong> <?= htmlspecialchars($role) ?></p>
         </div>
-        <a href="admin_index.php">Назад към началната страница</a>
-    </div>    
+        <div class="profile-photo-placeholder">
+            <p>Профилна снимка</p>
+        </div>
+        <a href="admin_index.php" class="btn">Назад към началната страница</a>
+    </div>
 </body>
 </html>
+
