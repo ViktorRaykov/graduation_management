@@ -44,7 +44,7 @@ $mysqli->close();
         <div class="profile-picture">
             <img src="path/to/profile/picture.png" alt="Профилна снимка">
         </div>
-        <a href="index.php">Назад към началната страница</a>
+        <a href="admin_index.php">Назад към началната страница</a>
     </div>    
 </body>
 </html>

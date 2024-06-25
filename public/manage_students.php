@@ -27,7 +27,7 @@ if(!$result){
 <body>
     <div class="wrapper">
         <h2>Управление на дипломирани студенти</h2>
-        <p><a href="index.php" class="btn btn-primary">Обратно към началната страница</a></p>
+        <p><a href="admin_index.php" class="btn btn-primary">Обратно към началната страница</a></p>
         <?php if($result->num_rows > 0): ?>
             <table class="table">
                 <thead>
