@@ -8,7 +8,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
 
 require_once '../config/config.php';
 
-// Получаване на годината на дипломиране на логнатия студент
 $user_id = $_SESSION["id"];
 $sql = "SELECT graduation_year FROM students WHERE user_id = ?";
 if ($stmt = $mysqli->prepare($sql)) {
@@ -19,7 +18,6 @@ if ($stmt = $mysqli->prepare($sql)) {
     $stmt->close();
 }
 
-// Извличане на всички студенти, завършили в същата година
 $sql = "SELECT u.username, s.degree, s.graduation_year 
         FROM users u 
         JOIN students s ON u.id = s.user_id 
@@ -47,7 +45,6 @@ $mysqli->close();
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
     <script src="js/main.js"></script>
     <style>
-        /* Custom styles for DataTables */
         .dataTables_wrapper {
             margin-top: 20px;
         }
@@ -103,7 +100,7 @@ $mysqli->close();
                     "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/Bulgarian.json"
                 },
                 "columnDefs": [
-                    { "orderable": true, "targets": [1, 2] } // Позволява сортиране за колоните "Степен" и "Година на дипломиране"
+                    { "orderable": true, "targets": [1, 2] }
                 ]
             });
         });
