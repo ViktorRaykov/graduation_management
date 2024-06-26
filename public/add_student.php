@@ -31,9 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->bind_param("sssss", $username, $password, $email, $first_name, $last_name);
                     if ($stmt->execute()) {
                         $user_id = $stmt->insert_id;
-                        $sql = "INSERT INTO students (user_id, degree, graduation_year) VALUES (?, ?, ?)";
+                        $sql = "INSERT INTO students (user_id, name, degree, graduation_year) VALUES (?, ?, ?, ?)";
                         if ($stmt = $mysqli->prepare($sql)) {
-                            $stmt->bind_param("iss", $user_id, $degree, $graduation_year);
+                            $stmt->bind_param("isss", $user_id, $username, $degree, $graduation_year);
                             if ($stmt->execute()) {
                                 header("location: manage_students.php");
                                 exit;
@@ -54,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mysqli->close();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="bg">

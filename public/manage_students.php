@@ -19,12 +19,42 @@ $result = $mysqli->query($sql);
     <meta charset="UTF-8">
     <title>Управление на дипломирани студенти</title>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script src="js/main.js"></script>
+    <style>
+        /* Custom styles for DataTables */
+        .dataTables_wrapper {
+            margin-top: 20px;
+        }
+        .dataTables_length {
+            float: left;
+        }
+        .dataTables_filter {
+            float: right;
+        }
+        .dataTables_info {
+            float: left;
+            margin-top: 10px;
+        }
+        .dataTables_paginate {
+            float: right;
+            margin-top: 10px;
+        }
+        table.dataTable thead th {
+            border-bottom: none;
+        }
+        table.dataTable.no-footer {
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
     <div class="wrapper">
         <h2>Управление на дипломирани студенти</h2>
         <a href="admin_index.php" class="btn btn-primary">Обратно към началната страница</a>
-        <table class="table">
+        <table id="studentsTable" class="table">
             <thead>
                 <tr>
                     <th>ID</th>

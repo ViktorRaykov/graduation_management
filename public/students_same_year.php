@@ -42,11 +42,41 @@ $mysqli->close();
     <meta charset="UTF-8">
     <title>Списък на студенти завършили в същата година</title>
     <link rel="stylesheet" href="css/students_same_year.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script src="js/main.js"></script>
+    <style>
+        /* Custom styles for DataTables */
+        .dataTables_wrapper {
+            margin-top: 20px;
+        }
+        .dataTables_length {
+            float: left;
+        }
+        .dataTables_filter {
+            float: right;
+        }
+        .dataTables_info {
+            float: left;
+            margin-top: 10px;
+        }
+        .dataTables_paginate {
+            float: right;
+            margin-top: 10px;
+        }
+        table.dataTable thead th {
+            border-bottom: none;
+        }
+        table.dataTable.no-footer {
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
     <div class="wrapper">
         <h2>Списък на студенти завършили в същата година</h2>
-        <table class="table">
+        <table id="studentsSameYearTable" class="table">
             <thead>
                 <tr>
                     <th>Потребителско име</th>
@@ -66,5 +96,17 @@ $mysqli->close();
         </table>
         <a href="student_index.php" class="btn btn-secondary">Назад</a>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#studentsSameYearTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/Bulgarian.json"
+                },
+                "columnDefs": [
+                    { "orderable": true, "targets": [1, 2] } // Позволява сортиране за колоните "Степен" и "Година на дипломиране"
+                ]
+            });
+        });
+    </script>
 </body>
 </html>
